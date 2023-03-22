@@ -202,7 +202,7 @@ func Capitalise(s string) string {
 }
 
 func main() {
-	s := []string{"i", "try", "(low,", "2)", "(low,"}
+	s := []string{"i", "try", "(low,", "2)", "(low,", "3)3"}
 	// s := []string{",", "(cap)", "ect", ".", "try", "(up)", ".", "(low)", ".", "(cap)", "ect", ",", "basta", ",", "(cap)"}
 
 	// s := []string{"(cap)", "(low)", "(up)", "ect", ".", "try", "(up)", ".", "(cap)", ".", "(low)", "ect", ",", "basta", ",", "(cap)"}

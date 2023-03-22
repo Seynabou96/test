@@ -30,7 +30,7 @@ func Permutation(s []string) []string {
 		a := []string{"(cap)", "(low)", "(up)"}
 		p := []string{",", ".", ":"}
 		// if i == 0{}
-		if Contains(a, s[i]) && Contains(p, s[i-1]) {
+		if Contains(p, s[i]) && Contains(a, s[i-1]) {
 			tampon := s[i]
 			s[i] = s[i-1]
 			s[i-1] = tampon
@@ -42,6 +42,23 @@ func Permutation(s []string) []string {
 
 	return s
 
+}
+
+func ApplyChangeForPermutations(s string) string {
+	p := []string{",", ".", ":", ";", "!", "?"}
+
+	for i := 0; i < len(p); i++ {
+		s = strings.ReplaceAll(s, " "+p[i], p[i])
+	}
+	// s = strings.ReplaceAll(s, " .", ".")
+
+	return s
+}
+
+func Restructuration(s []string) []string {
+	f := strings.Join(s, " ")
+	s = strings.Fields(f)
+	return s
 }
 
 //	func Index(s string, toFind string) int {
@@ -137,16 +154,24 @@ func Capitalise(s string) string {
 }
 
 func main() {
-	// s := []string{",", "(cap)", "ect", ".", "try", "(cap)", ".", "(low)", ".", "(up)", "ect", ",", "basta", ",", "(cap)"}
+	s := []string{",", "(cap)", "ect", ".", "try", "(up)", ".", "(low)", ".", "(cap)", "ect", ",", "basta", ",", "(cap)"}
 
-	s := []string{"(cap)", "(low)", "(up)", "ect", ".", "try", "(up)", ".", "(cap)", ".", "(low)", "ect", ",", "basta", ",", "(cap)"}
+	// s := []string{"(cap)", "(low)", "(up)", "ect", ".", "try", "(up)", ".", "(cap)", ".", "(low)", "ect", ",", "basta", ",", "(cap)"}
 	fmt.Println(s)
 
 	s = Permutation(s)
 	fmt.Println(s)
+	f := strings.Join(s, " ")
+	fmt.Println(f)
+	f = ApplyChangeForPermutations(f)
+	fmt.Println(f)
+	s = strings.Fields(f)
+	fmt.Println(s)
 
 	s = TryIt(s)
 	fmt.Println(s)
+	fmt.Println(len(s))
+
 	// fmt.Println(i)
 	// fmt.Println(f)
 

@@ -6,6 +6,21 @@ import (
 	"strings"
 )
 
+func Trimatoi(s string) int {
+	signe := 1
+	num := 0
+
+	for i := 0; i < len(s); i++ {
+		if s[i] >= '0' && s[i] <= '9' {
+			num *= 10
+			num += int(s[i] - 48)
+		} else if s[i] == '-' && num == 0 {
+			signe = -1
+		}
+	}
+	return num * signe
+}
+
 func Contains(a []string, element string) bool {
 	// f[]string
 	for i := 0; i < len(a); i++ {
@@ -144,7 +159,8 @@ func TryIt(a []string) []string {
 
 		} else if a[i] == "(low," && i != len(a)-1 {
 
-			number, _ := strconv.Atoi(a[i+1])
+			// number, _ := strconv.Atoi(a[i+1])
+			number := Trimatoi(a[i+1])
 			numToString := strconv.Itoa(number)
 			b := numToString + ")"
 			fmt.Println(a[i+1], number, numToString, b)

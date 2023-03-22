@@ -71,28 +71,40 @@ func TryIt(a []string) []string {
 	front := []string{"(cap)", "(low)", "(up)"}
 
 	for i := 0; i < len(a); i++ {
-		if (a[i] == "(cap)" || a[i] == "(low)" || a[i] == "(up)") && i == 0 {
-			fmt.Println(a[i], i, i-1, 1)
+		if Contains(front, a[i]) && i == 0 {
+			// fmt.Println(a[i], i, i-1, 1)(a[i] == "(cap)" || a[i] == "(low)" || a[i] == "(up)")
 
-		} else if Contains(front, a[i]) && Contains(front, a[i-1]) {
-			fmt.Println(a[i], i, i-1, 2)
-			fmt.Println(a[i], a[i-1])
+		} else if Contains(front, a[i]) && Contains(front, a[i-1]) && i == 1 {
+			// fmt.Println(a[i], i, i-1, 2)
+			// // fmt.Println(a[i], a[i-1])
+			// fmt.Println(a[i], a[i-1], result)
+
+		} else if Contains(front, a[i]) && Contains(front, a[i-1]) && i == 2 {
+			// fmt.Println(a[i], i, i-1, 2)
+			// // fmt.Println(a[i], a[i-1])
+			// fmt.Println(a[i], a[i-1], result)
 
 		} else if a[i] == "(cap)" {
 			// a[i-1] = Capitalise(a[i-1])
 			fmt.Println(a[i], i, i-1, 3)
-			fmt.Println(a[i], a[i-1])
+			fmt.Println(a[i], a[i-1], result)
+			fmt.Println(result[len(result)-1])
 
 			index := Index(result, result[len(result)-1])
 			result[index] = Capitalise(result[index])
 
 		} else if a[i] == "(low)" {
 			index := Index(result, result[len(result)-1])
+			fmt.Println(result[len(result)-1])
 			result[index] = strings.ToLower(result[index])
+			fmt.Println(a[i], a[i-1], result)
 
 		} else if a[i] == "(up)" {
 			index := Index(result, result[len(result)-1])
+			fmt.Println(result[len(result)-1])
+
 			result[index] = strings.ToUpper(result[index])
+			fmt.Println(a[i], a[i-1], result)
 
 		} else {
 			result = append(result, a[i])
@@ -127,7 +139,7 @@ func Capitalise(s string) string {
 func main() {
 	// s := []string{",", "(cap)", "ect", ".", "try", "(cap)", ".", "(low)", ".", "(up)", "ect", ",", "basta", ",", "(cap)"}
 
-	s := []string{"(cap)", "(low)", "(up)", "ect", ".", "TRY", "(cap)", ".", "(up)", ".", "(low)", "ect", ",", "basta", ",", "(cap)"}
+	s := []string{"(cap)", "(low)", "(up)", "ect", ".", "try", "(up)", ".", "(cap)", ".", "(low)", "ect", ",", "basta", ",", "(cap)"}
 	fmt.Println(s)
 
 	s = Permutation(s)

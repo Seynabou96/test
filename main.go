@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"strconv"
 	"strings"
 )
 
@@ -73,6 +74,24 @@ func Restructuration(s []string) []string {
 //		}
 //		return -1
 //	}
+
+func IsNumeric(s string) bool {
+	for _, number := range s {
+		if (number >= 0 && number <= 47) || (number >= 58 && number <= 127) {
+			return false
+		}
+	}
+	return true
+}
+func RespectTheFormat(a string) bool {
+	number, _ := strconv.Atoi(a)
+	numToString := strconv.Itoa(number)
+	b := numToString + ")"
+	if a == b {
+		return true
+	}
+	return false
+}
 func Index(s []string, e string) int {
 	for i, v := range s {
 		if v == e {
@@ -85,7 +104,7 @@ func Index(s []string, e string) int {
 
 func TryIt(a []string) []string {
 	var result []string
-	front := []string{"(cap)", "(low)", "(up)"}
+	front := []string{"(cap)", "(low)", "(up)", "(low,", "(cap,", "(up,", "(hex)", "(bin)"}
 
 	for i := 0; i < len(a); i++ {
 		if Contains(front, a[i]) && i == 0 {
@@ -123,6 +142,19 @@ func TryIt(a []string) []string {
 			result[index] = strings.ToUpper(result[index])
 			fmt.Println(a[i], a[i-1], result)
 
+		} else if a[i] == "(low," && i != len(a)-1 {
+
+			number, _ := strconv.Atoi(a[i+1])
+			numToString := strconv.Itoa(number)
+			b := numToString + ")"
+			fmt.Println(a[i+1], number, numToString, b)
+			if a[i+1] == b {
+				fmt.Println("i found you")
+			} else {
+				fmt.Println("not found")
+
+			}
+
 		} else {
 			result = append(result, a[i])
 		}
@@ -154,7 +186,8 @@ func Capitalise(s string) string {
 }
 
 func main() {
-	s := []string{",", "(cap)", "ect", ".", "try", "(up)", ".", "(low)", ".", "(cap)", "ect", ",", "basta", ",", "(cap)"}
+	s := []string{"i", "try", "(low,", "2)", "(low,"}
+	// s := []string{",", "(cap)", "ect", ".", "try", "(up)", ".", "(low)", ".", "(cap)", "ect", ",", "basta", ",", "(cap)"}
 
 	// s := []string{"(cap)", "(low)", "(up)", "ect", ".", "try", "(up)", ".", "(cap)", ".", "(low)", "ect", ",", "basta", ",", "(cap)"}
 	fmt.Println(s)

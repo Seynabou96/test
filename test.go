@@ -4,18 +4,6 @@ import (
 	"fmt"
 )
 
-func IsPrime(nb int) bool {
-	if nb <= 0 {
-		return false
-	}
-	for i := 1; i < nb; i++ {
-		if nb%i == 0 {
-			return false
-		}
-	}
-	return true
-}
-
 func Apostrophe(s string) string {
 	so := []rune(s)
 
@@ -30,19 +18,15 @@ func Apostrophe(s string) string {
 			fmt.Println(count)
 			count++
 		}
-		if count == 1 && so[i] == ' ' && so[i-1] == 39 {
-
+		if count%2 != 0 && so[i] == ' ' && so[i-1] == 39 {
 			l = append(l, year)
 
-		} else if count == 1 && so[i] == ' ' && so[i+1] == 39 {
-			l = append(l, year)
-			fmt.Println("yes")
+		} else if count%2 == 0 && so[i] == 39 && i != 0 {
+			// l = append(l, year)
+			// so[i-1] = year
+			l[i-1] = year
+			l = append(l, so[i])
 
-		} else if count == 3 && so[i] == ' ' && so[i-1] == 39 {
-			l = append(l, year)
-
-		} else if count == 3 && so[i] == ' ' && so[i+1] == 39 {
-			l = append(l, year)
 			fmt.Println("yes")
 
 		} else {
@@ -73,7 +57,7 @@ func Apostrophe(s string) string {
 // }
 
 func main() {
-	s := "i am exactly how they describe me: ' awesome try it ' ok ' again '  "
+	s := "i am exactly how they describe me:  ' again ' ' "
 
 	// s = strings.ReplaceAll(s, " ' ", " '")
 	fmt.Println(s)

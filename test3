@@ -1,0 +1,188 @@
+package main
+
+import (
+	"fmt"
+	"strings"
+)
+
+func Contains(a []string, element string) bool {
+	// f[]string
+	for i := 0; i < len(a); i++ {
+		if a[i] == element {
+			return true
+		}
+	}
+	return false
+}
+func ReunionWithCommas(arr []string) []string {
+	for i := 0; i < len(arr); i++ {
+		if arr[i] == "(up" {
+			arr[i] = "(up,"
+			arr[i+1] = " "
+		}
+		if arr[i] == "(low" {
+			arr[i] = "(low,"
+			arr[i+1] = " "
+		}
+		if arr[i] == "(cap" {
+			arr[i] = "(cap,"
+			arr[i+1] = " "
+		}
+	}
+	return arr
+}
+func Permutation(s []string) []string {
+
+	for i := 1; i < len(s); i++ {
+		a := []string{"(cap)", "(low)", "(up)", "(low,", "(cap,", "(up,", "(hex)", "(bin)"}
+		// b := []string{"(low,", "(cap,", "(up,"}
+		p := []string{",", ".", ":", ";", "!", "?"}
+		// if i == 0{}
+		if Contains(p, s[i]) && Contains(a, s[i-1]) {
+			tampon := s[i]
+			s[i] = s[i-1]
+			s[i-1] = tampon
+
+			// fmt.Println(s, 0)
+			return Permutation(s)
+		}
+		if Contains(p, s[i]) && (s[i-2] == "(low," || s[i-2] == "(cap," || s[i-2] == "(up,") {
+			//s[i-2] == "(low,"
+			tampon := s[i]
+			s[i] = s[i-1]
+			s[i-1] = tampon
+
+			return Permutation(s)
+		}
+	}
+
+	return s
+
+}
+func Article(s string) string {
+	arc := []string{"a", "e", "i", "u", "o", "h", "A", "E", "I", "U", "O", "H"}
+	for i := 0; i < len(arc); i++ {
+		s = strings.ReplaceAll(s, "a "+arc[i], "an "+arc[i])
+		s = strings.ReplaceAll(s, "A "+arc[i], "AN "+arc[i])
+		s = strings.ReplaceAll(s, "a '"+arc[i], "an '"+arc[i])
+		s = strings.ReplaceAll(s, "A '"+arc[i], "AN '"+arc[i])
+
+	}
+
+	return s
+}
+
+func ApplyChangeForPermutations(s string) string {
+	p := []string{",", ".", ":", ";", "!", "?"}
+
+	for i := 0; i < len(p); i++ {
+		s = strings.ReplaceAll(s, " "+p[i], p[i])
+	}
+	// s = strings.ReplaceAll(s, " .", ".")
+
+	return s
+}
+func Capitalise(s string) string {
+
+	so := []rune(s)
+	count := 0
+	for i := 0; i < len(s); i++ {
+		if (so[i] >= 'a' && so[i] <= 'z') || (so[i] >= 'A' && so[i] <= 'Z') || (so[i] >= '0' && so[i] <= '9') {
+			count++
+		} else {
+			count = 0
+		}
+
+		if count == 1 && so[i] >= 'a' && so[i] <= 'z' {
+			so[i] -= 32
+
+		} else if count > 1 && so[i] >= 'A' && so[i] <= 'Z' {
+			so[i] += 32
+
+		}
+	}
+
+	return string(so)
+}
+
+func Restructuration(s []string) []string {
+	f := strings.Join(s, " ")
+	s = strings.Fields(f)
+	return s
+}
+func Ponctuations(s string) string {
+	arr := []string{",", ";", ":", "!", "'", "?", "."}
+	for i := 0; i < len(arr); i++ {
+		// separation
+		s = strings.ReplaceAll(s, arr[i], " "+arr[i]+" ")
+	}
+	return s
+}
+func Apostrophe(s string) string {
+	so := []rune(s)
+
+	var l, last []rune
+
+	num := 2023
+	year := rune(num)
+
+	count := 0
+	for i := 0; i < len(so); i++ {
+		if so[i] == 39 {
+			fmt.Println(count)
+			count++
+		}
+		if count%2 != 0 && so[i] == ' ' && so[i-1] == 39 {
+			l = append(l, year)
+
+		} else if count%2 == 0 && so[i] == 39 && i != 0 {
+			// l = append(l, year)
+			// so[i-1] = year
+			l[i-1] = year
+			l = append(l, so[i])
+
+			fmt.Println("yes")
+
+		} else {
+			l = append(l, so[i])
+
+		}
+	}
+
+	for _, v := range l {
+		if v != year {
+			last = append(last, v)
+		}
+	}
+	return string(last)
+}
+func main() {
+	s := "( cap ) (word(cap)) ,(cap) . (low, 2) , a 'hello'"
+	s = strings.ReplaceAll(s, "( ", "(")
+	s = strings.ReplaceAll(s, " )", ")")
+
+	s = strings.ReplaceAll(s, "(", " (")
+	s = strings.ReplaceAll(s, ")", ") ")
+	//separation
+	s = Ponctuations(s)
+	fmt.Println(s)
+	t := strings.Fields(s)
+	fmt.Println(t, 2)
+
+	t = ReunionWithCommas(t)
+
+	fmt.Println(t)
+	t = Restructuration(t)
+	//permuter ponctuations
+	t = Permutation(t)
+	fmt.Println(t)
+	s = strings.Join(t, " ")
+	s = ApplyChangeForPermutations(s)
+	s = Apostrophe(s)
+	s = Article(s)
+	t = strings.Fields(s)
+	fmt.Println(t)
+	// d := Capitalise("'hello'")
+	// fmt.Println(d)
+
+}

@@ -333,9 +333,10 @@ func Try(input, output string) {
 				}
 			}
 			// s[i+1] = ""
-			firstArray = append(firstArray[:i+1], firstArray[i+2:]...)
+			// firstArray = append(firstArray[:i+1], firstArray[i+2:]...)
+			// firstArray[i+1] = ""
 
-			continue
+			// continue
 
 		} else if firstArray[i] == "(cap," && VerifyFormat(firstArray, firstArray[i+1]) && len(finalArray) != 0 {
 			number := Trimatoi(firstArray[i+1])
@@ -352,10 +353,10 @@ func Try(input, output string) {
 					}
 				}
 			}
-			// s[i+1] = ""
-			firstArray = append(firstArray[:i+1], firstArray[i+2:]...)
+			// firstArray[i+1] = ""
+			// // firstArray = append(firstArray[:i+1], firstArray[i+1:]...)
 
-			continue
+			// continue
 
 		} else if firstArray[i] == "(up," && VerifyFormat(firstArray, firstArray[i+1]) && len(finalArray) != 0 {
 			number := Trimatoi(firstArray[i+1])
@@ -374,9 +375,11 @@ func Try(input, output string) {
 
 				}
 			}
-			// s[i+1] = ""
-			firstArray = append(firstArray[:i+1], firstArray[i+2:]...)
-			continue
+			// // s[i+1] = ""
+			// firstArray = append(firstArray[:i+1], firstArray[i+2:]...)
+			// continue
+
+		} else if VerifyFormat(finalArray, firstArray[i]) && Contains(firstArray, firstArray[i-1]) {
 
 		} else {
 			finalArray = append(finalArray, firstArray[i])

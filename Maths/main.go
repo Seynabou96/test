@@ -112,10 +112,66 @@ func Median(intArray []int) int {
 	return median
 }
 
+// ---------------Calcul puissance-----------//
+func IterativePower(nb int, power int) int {
+	iteration := 1
+	if nb == 0 && power == 0 {
+		return 1
+	}
+	if nb == 0 || power < 0 {
+		return 0
+	} else {
+		for i := 1; i <= power; i++ {
+			iteration *= nb
+		}
+		return iteration
+	}
+}
+
+//-------------Variance------------//
+
+func Variance(intArray []int) int {
+	var variance, x int
+	for i := 0; i < len(intArray); i++ {
+		nb := intArray[i] - Average(intArray)
+		x = x + IterativePower(nb, 2)
+	}
+
+	variance = x / 2
+
+	return variance
+}
+
+// -----------Racine carré d'un nombre----------------//
+func Sqrt(nb int) int {
+	carre := 0
+	if nb < 0 {
+		return 0
+	}
+	if nb == 1 {
+		return 1
+	}
+	for i := 1; i < nb; i++ {
+		if i*i == nb {
+			carre = i
+		}
+	}
+	return carre
+}
+
+//-------------Ecart type----------------//
+
+func StandardDeviation(variance int) int {
+
+	ecartType := Sqrt(variance)
+
+	return ecartType
+}
+
 //-----------Fonction qui s'occupe de calculer et d'afficher----------//
 
 func MathsSkills(input string) {
-	var average, median int
+	var average, median, variance, ecartType int
 	dataString := ReadTheFile(input)
 	// fmt.Println(dataString)
 	/////---Mettre les données dans un tableau------/////
@@ -125,9 +181,13 @@ func MathsSkills(input string) {
 	//calculs
 	average = Average(intArray)
 	median = Median(intArray)
+	variance = Variance(intArray)
+	ecartType = StandardDeviation(variance)
 	//Affichage
 	fmt.Println("Average:", average)
 	fmt.Println("Median:", median)
+	fmt.Println("Variance:", variance)
+	fmt.Println("Standard Deviation:", ecartType)
 
 }
 

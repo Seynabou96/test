@@ -379,7 +379,7 @@ func Try(input, output string) {
 			// firstArray = append(firstArray[:i+1], firstArray[i+2:]...)
 			// continue
 
-		} else if VerifyFormat(finalArray, firstArray[i]) && Contains(firstArray, firstArray[i-1]) {
+		} else if VerifyFormat(firstArray, firstArray[i]) && (firstArray[i-1] == "(low," || firstArray[i-1] == "(cap," || firstArray[i-1] == "(up,") {
 
 		} else {
 			finalArray = append(finalArray, firstArray[i])

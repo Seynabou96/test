@@ -36,7 +36,7 @@ func Trimatoi(s string) int {
 	return num * signe
 }
 
-// ----------------Transformer haque élément en nombre------------//
+// ----------------Transformer chaque élément en nombre------------//
 
 func ArrayData(arr []string) []int {
 	var intArray []int
@@ -45,6 +45,11 @@ func ArrayData(arr []string) []int {
 	}
 
 	return intArray
+}
+
+//------------Obtenir le nombre entier le plus proche---------//
+func Rounded(num int){
+	
 }
 
 //------------Calcul Moyenne---------------//

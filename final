@@ -24,9 +24,13 @@ func CreateAndWriteInAFile(output, finalContent string) {
 	//création du fichier de sortie
 	newFile, _ := os.Create(output)
 	//écriture dans le nouveau fichier
-	writeInFile, _ := newFile.WriteString(finalContent)
+	// writeInFile, _ := newFile.WriteString(finalContent)
+	_, err := newFile.WriteString(finalContent)
+	if err != nil {
+		fmt.Println("error detected")
+	}
 
-	fmt.Printf("last: %v\n", writeInFile)
+	// fmt.Printf("last: %v\n", writeInFile)
 
 }
 

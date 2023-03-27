@@ -21,23 +21,6 @@ func ReadTheFile(input string) string {
 	return string(data)
 }
 
-// //------------Transforme un string en nombre---------//
-
-// func Trimatoi(s string) int {
-// 	signe := 1
-// 	num := 0
-
-// 	for i := 0; i < len(s); i++ {
-// 		if s[i] >= '0' && s[i] <= '9' {
-// 			num *= 10
-// 			num += int(s[i] - 48)
-// 		} else if s[i] == '-' && num == 0 {
-// 			signe = -1
-// 		}
-// 	}
-// 	return num * signe
-// }
-
 // ----------------Transformer chaque élément en nombre------------//
 
 func ArrayData(arr []string) []float64 {
@@ -49,11 +32,6 @@ func ArrayData(arr []string) []float64 {
 	}
 
 	return intArray
-}
-
-// ------------Obtenir le nombre entier le plus proche---------//
-func Rounded(num int) {
-
 }
 
 //------------Calcul Moyenne---------------//
@@ -121,29 +99,13 @@ func Median(intArray []float64) float64 {
 	return median
 }
 
-// ---------------Calcul puissance-----------//
-func IterativePower(nb float64, power int) float64 {
-	iteration := 1.0
-	if nb == 0 && power == 0 {
-		return 1
-	}
-	if nb == 0 || power < 0 {
-		return 0
-	} else {
-		for i := 1; i <= power; i++ {
-			iteration *= nb
-		}
-		return iteration
-	}
-}
-
 //-------------Variance------------//
 
 func Variance(intArray []float64) float64 {
 	var variance, x, xi float64
 	for i := 0; i < len(intArray); i++ {
 		nb := intArray[i] - Average(intArray)
-		xi = nb * nb
+		xi = math.Pow(nb, 2)
 		x += xi
 	}
 
@@ -152,30 +114,11 @@ func Variance(intArray []float64) float64 {
 	return variance
 }
 
-// -----------Racine carré d'un nombre----------------//
-func Sqrt(nb float64) float64 {
-	carre := 0.0
-	if nb < 0.0 {
-		return 0.0
-	}
-	if nb == 1 {
-		return 1
-	}
-	for i := 1.0; i < nb; i++ {
-		if i*i <= nb {
-			carre = i
-		}
-	}
-	return carre
-}
-
 //-------------Ecart type----------------//
 
 func StandardDeviation(variance float64) float64 {
 
 	ecartType := math.Sqrt(variance)
-	// Sqrt(variance)
-
 	return ecartType
 }
 
@@ -193,17 +136,15 @@ func MathsSkills(input string) {
 	average = Average(intArray)
 	median = Median(intArray)
 	variance = Variance(intArray)
+	vari0 := math.Round(variance)
+	// variance1 := strconv.ParseInt(variance)
+	vari := int(vari0)
 	ecartType = StandardDeviation(variance)
 	//Affichage
 	fmt.Println("Average:", math.Round(average))
 	fmt.Println("Median:", math.Round(median))
-	fmt.Println("Variance:", math.Round(variance))
+	fmt.Println("Variance:", vari)
 	fmt.Println("Standard Deviation:", math.Round(ecartType))
-	// fmt.Println("Average:", average)
-	// fmt.Println("Median:", median)
-	// fmt.Println("Variance:", variance)
-	// fmt.Println("Standard Deviation:", ecartType)
-
 }
 
 func main() {

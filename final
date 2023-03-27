@@ -94,21 +94,36 @@ func VerifyFormat(s []string, ele string) bool {
 	numToString := strconv.Itoa(number)
 	b := numToString + ")"
 	return ele == b
-
 }
 
 // -------conversion base hexadecimal à la base de 10-----//
-func ConvertBaseHexToTen(indicateur string) string {
-	baseHexa, _ := strconv.ParseInt(indicateur, 16, 64)
-	int64ToString := strconv.FormatInt(baseHexa, 10)
-	return int64ToString
+func ConvertBaseHexToTen(indicateur string) (string, bool) {
+	var int64ToString string
+	hex := true
+	baseHexa, err := strconv.ParseInt(indicateur, 16, 64)
+	if err != nil {
+		fmt.Println("Veuillez saisir un nombre hex valide")
+		hex = false
+
+	} else {
+		int64ToString = strconv.FormatInt(baseHexa, 10)
+
+	}
+	return int64ToString, hex
 }
 
 // --------conversion base binaire à la base de 10 ----------//
-func ConvertBaseBinToTen(indicateur string) string {
-	baseBin, _ := strconv.ParseInt(indicateur, 2, 64)
-	int64ToString := strconv.FormatInt(baseBin, 10)
-	return int64ToString
+func ConvertBaseBinToTen(indicateur string) (string, bool) {
+	var int64ToString string
+	bin := true
+	baseBin, err := strconv.ParseInt(indicateur, 2, 64)
+	if err != nil {
+		fmt.Println("Veuillez saisir un nombre bin valide")
+		bin = false
+	} else {
+		int64ToString = strconv.FormatInt(baseBin, 10)
+	}
+	return int64ToString, bin
 }
 
 // -----------Ponctuations séparation----------//
@@ -257,11 +272,20 @@ func Apostrophe(s string) string {
 func Article(s string) string {
 	arc := []string{"a", "e", "i", "u", "o", "h", "A", "E", "I", "U", "O", "H"}
 	for i := 0; i < len(arc); i++ {
-		s = strings.ReplaceAll(s, " a "+arc[i], " an "+arc[i])
-		s = strings.ReplaceAll(s, " A "+arc[i], " An "+arc[i])
-		s = strings.ReplaceAll(s, " a '"+arc[i], " an '"+arc[i])
-		s = strings.ReplaceAll(s, " A '"+arc[i], " An '"+arc[i])
+		if len(s) > 1 {
 
+			if (s[0] == 'a' || s[0] == 'A') && s[1] == ' ' && Contains(arc, string(s[2])) {
+				s = string(s[0]) + "n" + " " + string(s[2:])
+			} else {
+
+			}
+
+			s = strings.ReplaceAll(s, " a "+arc[i], " an "+arc[i])
+			s = strings.ReplaceAll(s, " A "+arc[i], " An "+arc[i])
+			s = strings.ReplaceAll(s, " a '"+arc[i], " an '"+arc[i])
+			s = strings.ReplaceAll(s, " A '"+arc[i], " An '"+arc[i])
+
+		}
 	}
 
 	return s
@@ -305,8 +329,6 @@ func Try(input, output string) {
 	filecontent = ApplyChangeForPermutations(filecontent)
 	/////Appliquer les changements pour les apostrophes/////
 	filecontent = Apostrophe(filecontent)
-	/////Appliquer les changements pour les instances de l'article "a" ou "A"/////
-	filecontent = Article(filecontent)
 	/////Retour vers un tableau de string/////
 	firstArray = strings.Fields(filecontent)
 
@@ -317,12 +339,16 @@ func Try(input, output string) {
 		} else if Contains(once, firstArray[i]) && i == len(firstArray)-1 {
 			//par exemple si on n'a (low, comme dernier élément
 		} else if firstArray[i] == "(hex)" && len(finalArray) != 0 {
-			number := ConvertBaseHexToTen(finalArray[len(finalArray)-1])
-			finalArray[len(finalArray)-1] = number
+			number, hex := ConvertBaseHexToTen(finalArray[len(finalArray)-1])
+			if hex {
+				finalArray[len(finalArray)-1] = number
+			}
 
 		} else if firstArray[i] == "(bin)" && len(finalArray) != 0 {
-			number := ConvertBaseBinToTen(finalArray[len(finalArray)-1])
-			finalArray[len(finalArray)-1] = number
+			number, bin := ConvertBaseBinToTen(finalArray[len(finalArray)-1])
+			if bin {
+				finalArray[len(finalArray)-1] = number
+			}
 
 		} else if firstArray[i] == "(cap)" && len(finalArray) != 0 {
 			finalArray[len(finalArray)-1] = Capitalise(finalArray[len(finalArray)-1])
@@ -330,9 +356,6 @@ func Try(input, output string) {
 			finalArray[len(finalArray)-1] = strings.ToUpper(finalArray[len(finalArray)-1])
 		} else if firstArray[i] == "(low)" && len(finalArray) != 0 {
 			finalArray[len(finalArray)-1] = strings.ToLower(finalArray[len(finalArray)-1])
-		} else if Contains(once, firstArray[i]) && !VerifyFormat(firstArray, firstArray[i+1]) {
-			// par exemple si on a un (cap, mais que
-			// le mot suivant ne respecte pas le format
 		} else if firstArray[i] == "(low," && VerifyFormat(firstArray, firstArray[i+1]) && len(finalArray) != 0 {
 			number := Trimatoi(firstArray[i+1])
 			if number > 0 {
@@ -348,11 +371,6 @@ func Try(input, output string) {
 					}
 				}
 			}
-			// s[i+1] = ""
-			// firstArray = append(firstArray[:i+1], firstArray[i+2:]...)
-			// firstArray[i+1] = ""
-
-			// continue
 
 		} else if firstArray[i] == "(cap," && VerifyFormat(firstArray, firstArray[i+1]) && len(finalArray) != 0 {
 			number := Trimatoi(firstArray[i+1])
@@ -369,10 +387,6 @@ func Try(input, output string) {
 					}
 				}
 			}
-			// firstArray[i+1] = ""
-			// // firstArray = append(firstArray[:i+1], firstArray[i+1:]...)
-
-			// continue
 
 		} else if firstArray[i] == "(up," && VerifyFormat(firstArray, firstArray[i+1]) && len(finalArray) != 0 {
 			number := Trimatoi(firstArray[i+1])
@@ -391,9 +405,6 @@ func Try(input, output string) {
 
 				}
 			}
-			// // s[i+1] = ""
-			// firstArray = append(firstArray[:i+1], firstArray[i+2:]...)
-			// continue
 
 		} else if VerifyFormat(firstArray, firstArray[i]) && (firstArray[i-1] == "(low," || firstArray[i-1] == "(cap," || firstArray[i-1] == "(up,") {
 
@@ -401,7 +412,10 @@ func Try(input, output string) {
 			finalArray = append(finalArray, firstArray[i])
 		}
 	}
+	/////Appliquer les changements pour les instances de l'article "a" ou "A"/////
 	finalContent := strings.Join(finalArray, " ")
+	finalContent = Article(finalContent)
+
 	CreateAndWriteInAFile(output, finalContent)
 
 }

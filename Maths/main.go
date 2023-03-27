@@ -2,7 +2,9 @@ package main
 
 import (
 	"fmt"
+	"math"
 	"os"
+	"strconv"
 	"strings"
 )
 
@@ -19,58 +21,60 @@ func ReadTheFile(input string) string {
 	return string(data)
 }
 
-//------------Transforme un string en nombre---------//
+// //------------Transforme un string en nombre---------//
 
-func Trimatoi(s string) int {
-	signe := 1
-	num := 0
+// func Trimatoi(s string) int {
+// 	signe := 1
+// 	num := 0
 
-	for i := 0; i < len(s); i++ {
-		if s[i] >= '0' && s[i] <= '9' {
-			num *= 10
-			num += int(s[i] - 48)
-		} else if s[i] == '-' && num == 0 {
-			signe = -1
-		}
-	}
-	return num * signe
-}
+// 	for i := 0; i < len(s); i++ {
+// 		if s[i] >= '0' && s[i] <= '9' {
+// 			num *= 10
+// 			num += int(s[i] - 48)
+// 		} else if s[i] == '-' && num == 0 {
+// 			signe = -1
+// 		}
+// 	}
+// 	return num * signe
+// }
 
 // ----------------Transformer chaque élément en nombre------------//
 
-func ArrayData(arr []string) []int {
-	var intArray []int
+func ArrayData(arr []string) []float64 {
+	float := 1.2
+	var intArray []float64
 	for i := 0; i < len(arr); i++ {
-		intArray = append(intArray, Trimatoi(arr[i]))
+		float, _ = strconv.ParseFloat(arr[i], 64)
+		intArray = append(intArray, float)
 	}
 
 	return intArray
 }
 
-//------------Obtenir le nombre entier le plus proche---------//
-func Rounded(num int){
-	
+// ------------Obtenir le nombre entier le plus proche---------//
+func Rounded(num int) {
+
 }
 
 //------------Calcul Moyenne---------------//
 
-func Average(intArray []int) int {
+func Average(intArray []float64) float64 {
 
-	var average, somme int
+	var average, somme float64
 
 	//calculer la somme
 	for i := 0; i < len(intArray); i++ {
 		somme = somme + intArray[i]
 	}
 	//calculer average
-	average = somme / len(intArray)
+	average = somme / float64(len(intArray))
 
 	return average
 }
 
 // ---------Renvoie la median si elle est paire------------//
-func Abort(tabb []int) int {
-	var t int
+func Abort(tabb []float64) float64 {
+	var t float64
 	index := len(tabb) / 2
 	for i := 0; i < len(tabb); i++ {
 		for j := 0; j < len(tabb)-1; j++ {
@@ -85,8 +89,8 @@ func Abort(tabb []int) int {
 }
 
 // ---------Renvoie la median si elle est impaire------------//
-func Abort2(tabb []int) int {
-	var t int
+func Abort2(tabb []float64) float64 {
+	var t float64
 	index := len(tabb) / 2
 	for i := 0; i < len(tabb); i++ {
 		for j := 0; j < len(tabb)-1; j++ {
@@ -101,8 +105,8 @@ func Abort2(tabb []int) int {
 }
 
 // --------------Median-----------------//
-func Median(intArray []int) int {
-	var median int
+func Median(intArray []float64) float64 {
+	var median float64
 	// si impair
 	if len(intArray)%2 != 0 {
 		median1 := Abort(intArray)
@@ -118,8 +122,8 @@ func Median(intArray []int) int {
 }
 
 // ---------------Calcul puissance-----------//
-func IterativePower(nb int, power int) int {
-	iteration := 1
+func IterativePower(nb float64, power int) float64 {
+	iteration := 1.0
 	if nb == 0 && power == 0 {
 		return 1
 	}
@@ -135,29 +139,30 @@ func IterativePower(nb int, power int) int {
 
 //-------------Variance------------//
 
-func Variance(intArray []int) int {
-	var variance, x int
+func Variance(intArray []float64) float64 {
+	var variance, x, xi float64
 	for i := 0; i < len(intArray); i++ {
 		nb := intArray[i] - Average(intArray)
-		x = x + IterativePower(nb, 2)
+		xi = nb * nb
+		x += xi
 	}
 
-	variance = x / 2
+	variance = x / float64(len(intArray))
 
 	return variance
 }
 
 // -----------Racine carré d'un nombre----------------//
-func Sqrt(nb int) int {
-	carre := 0
-	if nb < 0 {
-		return 0
+func Sqrt(nb float64) float64 {
+	carre := 0.0
+	if nb < 0.0 {
+		return 0.0
 	}
 	if nb == 1 {
 		return 1
 	}
-	for i := 1; i < nb; i++ {
-		if i*i == nb {
+	for i := 1.0; i < nb; i++ {
+		if i*i <= nb {
 			carre = i
 		}
 	}
@@ -166,9 +171,10 @@ func Sqrt(nb int) int {
 
 //-------------Ecart type----------------//
 
-func StandardDeviation(variance int) int {
+func StandardDeviation(variance float64) float64 {
 
-	ecartType := Sqrt(variance)
+	ecartType := math.Sqrt(variance)
+	// Sqrt(variance)
 
 	return ecartType
 }
@@ -176,7 +182,7 @@ func StandardDeviation(variance int) int {
 //-----------Fonction qui s'occupe de calculer et d'afficher----------//
 
 func MathsSkills(input string) {
-	var average, median, variance, ecartType int
+	var average, median, variance, ecartType float64
 	dataString := ReadTheFile(input)
 	// fmt.Println(dataString)
 	/////---Mettre les données dans un tableau------/////
@@ -189,10 +195,14 @@ func MathsSkills(input string) {
 	variance = Variance(intArray)
 	ecartType = StandardDeviation(variance)
 	//Affichage
-	fmt.Println("Average:", average)
-	fmt.Println("Median:", median)
-	fmt.Println("Variance:", variance)
-	fmt.Println("Standard Deviation:", ecartType)
+	fmt.Println("Average:", math.Round(average))
+	fmt.Println("Median:", math.Round(median))
+	fmt.Println("Variance:", math.Round(variance))
+	fmt.Println("Standard Deviation:", math.Round(ecartType))
+	// fmt.Println("Average:", average)
+	// fmt.Println("Median:", median)
+	// fmt.Println("Variance:", variance)
+	// fmt.Println("Standard Deviation:", ecartType)
 
 }
 
